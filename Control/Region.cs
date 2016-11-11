@@ -557,18 +557,21 @@ namespace XiboClient
                         // Which video engine are we using?
                         if (ApplicationSettings.Default.VideoRenderingEngine == "DirectShow")
                             media = new VideoDS(options);
-                        else
+                        else if (ApplicationSettings.Default.VideoRenderingEngine == "vlc")
+                            media = new VlcVideo(options);
+                        else // WMP
                             media = new Video(options);
-
                         break;
 
                     case "localvideo":
+
                         // Which video engine are we using?
                         if (ApplicationSettings.Default.VideoRenderingEngine == "DirectShow")
                             media = new VideoDS(options);
-                        else
+                        else if (ApplicationSettings.Default.VideoRenderingEngine == "vlc")
+                            media = new VlcVideo(options);
+                        else // WMP
                             media = new Video(options);
-
                         break;
 
                     case "audio":

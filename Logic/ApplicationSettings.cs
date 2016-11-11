@@ -160,7 +160,9 @@ namespace XiboClient
         public string StatsLogFile { get; set; }
         public string CacheManagerFile { get; set; }
         public string RequiredFilesFile { get; set; }
-        public string VideoRenderingEngine { get; set; }
+
+        private string _videoRenderingEngine;
+        public string VideoRenderingEngine { get { return (string.IsNullOrWhiteSpace(_videoRenderingEngine)) ? "vlc" : _videoRenderingEngine; } set { _videoRenderingEngine = value; } }
 
         private string _libraryPath;
         public string LibraryPath { get { return (_libraryPath == "DEFAULT") ? (Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\" + Application.ProductName + " Library") : _libraryPath; } set { _libraryPath = value; } }

@@ -79,6 +79,24 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AsyncIO">
       <HintPath>packages\AsyncIO.0.1.18.0\lib\net40\AsyncIO.dll</HintPath>
@@ -107,6 +125,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Management" />
     <Reference Include="System.Web.Services" />
@@ -114,6 +133,18 @@
     <Reference Include="System.Xml" />
     <Reference Include="Unosquare.Labs.EmbedIO">
       <HintPath>packages\EmbedIO.1.0.17\lib\Unosquare.Labs.EmbedIO.dll</HintPath>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Core, Version=2.1.126.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
+      <HintPath>packages\Vlc.DotNet.Core.2.1.126\lib\net45\x86\Vlc.DotNet.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Core.Interops, Version=2.1.126.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
+      <HintPath>packages\Vlc.DotNet.Core.Interops.2.1.126\lib\net45\x86\Vlc.DotNet.Core.Interops.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Forms, Version=2.1.126.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
+      <HintPath>packages\Vlc.DotNet.Forms.2.1.126\lib\net45\x86\Vlc.DotNet.Forms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +181,13 @@
     <Compile Include="Media\IeWebMedia.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Media\VlcVideo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Media\VlcVideoPlayer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Media\VlcVideoPlayer.Designer.cs" />
     <Compile Include="Media\PowerPoint.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -331,7 +369,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo F|xcopy /Y "$(TargetPath)" "$(TargetDir)\Xibo.scr"</PostBuildEvent>
+    <PostBuildEvent>echo F|xcopy /Y "$(TargetPath)" "$(TargetDir)\Xibo.scr"
+if not exist lib mkdir lib
+if $(PlatformName) == AnyCPU xcopy "$(ProjectDir)lib\x86" "$(TargetDir)lib" /E /V /Y /R
+if $(PlatformName) == x86 xcopy "$(ProjectDir)lib\x86" "$(TargetDir)lib" /E /V /Y /R
+if $(PlatformName) == x64 xcopy "$(ProjectDir)lib\x64" "$(TargetDir)lib" /E /V /Y /R</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
